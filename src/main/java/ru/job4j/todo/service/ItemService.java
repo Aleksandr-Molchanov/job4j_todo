@@ -31,6 +31,10 @@ public class ItemService {
         return store.findAll();
     }
 
+    public Item findById(int id) {
+        return store.findById(id);
+    }
+
     public Collection<Item> findByDone(boolean isDone) {
         return store.findByDone(isDone);
     }

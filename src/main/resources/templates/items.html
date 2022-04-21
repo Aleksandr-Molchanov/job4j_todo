@@ -28,7 +28,6 @@
                 <a class="nav-item nav-link active" th:href="@{/items}">Все задания</a>
                 <a class="nav-item nav-link" th:href="@{/newItems}">Новые задания</a>
                 <a class="nav-item nav-link" th:href="@{/doneItems}">Выполненные задания</a>
-                <a class="nav-item nav-link" th:href="@{/addItem}">Добавить задание</a>
             </div>
         </div>
     </nav>
@@ -36,22 +35,35 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">Название</th>
-                <th scope="col">Описание</th>
-                <th scope="col">Дата добавления</th>
-                <th scope="col">Статус</th>
+                <th scope="col">Время добавления/редактирования</th>
+                <th scope="col">Статус выпонения</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="item: ${items}">
-                <td th:text="${item.id}" />
-                <td th:text="${item.name}" />
-                <td th:text="${item.description}" />
-                <td th:text="${item.done}" />
+                <div class="button updateItem">
+                    <td>
+                        <a th:href="@{|/descriptionItem/${item.id}|}" th:text="${item.name}"/>
+                    </td>
+                    <td th:text="${item.created}" />
+                    <td>
+                        <span th:if="${item.done}">
+                            Выполнено
+                        </span>
+                        <span th:if="${!item.done}">
+                            Не выполнено
+                        </span>
+                    </td>
+                </div>
             </tr>
             </tbody>
         </table>
+        <div class="button addItem">
+            <a class="nav-item nav-link" th:href="@{/addItem}">
+                <button type="submit" class="btn btn-primary mt-3" >Добавить</button>
+            </a>
+        </div>
     </div>
 </div>
 </body>

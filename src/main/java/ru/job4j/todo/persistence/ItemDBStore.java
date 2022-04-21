@@ -70,7 +70,17 @@ public class ItemDBStore {
     public List<Item> findByDone(boolean isDone) {
         Session session = sf.openSession();
         session.beginTransaction();
-        List rsl = session.createQuery("from Item where done = :isDone").list();
+        List rsl = session.createQuery("from Item where done = :isDone")
+                .setParameter("isDone", isDone).list();
+        session.getTransaction().commit();
+        session.close();
+        return rsl;
+    }
+
+    public Item findById(int id) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        Item rsl = session.get(Item.class, id);
         session.getTransaction().commit();
         session.close();
         return rsl;
