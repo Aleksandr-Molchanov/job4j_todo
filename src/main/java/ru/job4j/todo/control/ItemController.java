@@ -3,11 +3,9 @@ package ru.job4j.todo.control;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.service.ItemService;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Controller
