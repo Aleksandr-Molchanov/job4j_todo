@@ -27,7 +27,7 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
-            user.setName("Гость");
+            user.setEmail("Гость");
         }
         model.addAttribute("user", user);
         model.addAttribute("fail", fail != null);
@@ -39,40 +39,31 @@ public class UserController {
         Optional<User> regUser = userService.add(user);
         if (regUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
-            return "redirect:/formRegistration?fail=true";
+            return "redirect:/registration?fail=true";
         }
-        return "redirect:/success";
+        return "redirect:/login";
     }
 
-    @GetMapping("/success")
-    public String success(Model model, HttpSession session) {
+    @GetMapping("/formLogin")
+    public String formLogin(Model model, @RequestParam(name = "fail", required = false) Boolean fail, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
-            user.setName("Гость");
+            user.setEmail("Гость");
         }
         model.addAttribute("user", user);
-        return "success";
-    }
-
-    @PostMapping("/successRedirect")
-    public String successRedirect(Model model) {
-        return "redirect:/items";
-    }
-
-    @GetMapping("/loginPage")
-    public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail) {
         model.addAttribute("fail", fail != null);
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute User user, HttpServletRequest req) {
+    public String login(Model model, @ModelAttribute User user, HttpServletRequest req) {
         Optional<User> userDb = userService.findByEmailAndPwd(
                 user.getEmail(), user.getPassword()
         );
         if (userDb.isEmpty()) {
-            return "redirect:/loginPage?fail=true";
+            model.addAttribute("message", "Пользователь с такой почтой уже существует");
+            return "redirect:/formLogin?fail=true";
         }
         HttpSession session = req.getSession();
         session.setAttribute("user", userDb.get());
@@ -82,6 +73,6 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/loginPage";
+        return "redirect:/items";
     }
 }
