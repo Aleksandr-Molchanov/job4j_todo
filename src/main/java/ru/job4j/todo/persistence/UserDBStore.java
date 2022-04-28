@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.User;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.Optional;
 
@@ -66,7 +67,13 @@ public class UserDBStore implements DBStore {
                     final Query query = session.createQuery(hql);
                     query.setParameter("email", email);
                     query.setParameter("password", password);
-                    return Optional.empty();
+                    Optional rsl;
+                    try {
+                        rsl = Optional.of((User) query.getSingleResult());
+                    } catch (NoResultException e) {
+                        rsl = Optional.empty();
+                    }
+                    return rsl;
                 }, sf
         );
     }

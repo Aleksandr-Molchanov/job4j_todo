@@ -78,16 +78,12 @@ public class Item {
             return false;
         }
         Item item = (Item) o;
-        return done == item.done
-                && Objects.equals(id, item.id)
-                && Objects.equals(name, item.name)
-                && Objects.equals(description, item.description)
-                && Objects.equals(created, item.created);
+        return id == item.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, created, done);
+        return Objects.hash(id);
     }
 
     @Override

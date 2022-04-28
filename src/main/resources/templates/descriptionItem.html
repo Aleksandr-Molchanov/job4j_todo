@@ -49,6 +49,10 @@
                 </p>
                 <p class="card-text" th:text="${item.created}"/>
                 <p>
+                    <b>Автор задания:</b>
+                </p>
+                <p class="card-text" th:text="${item.user.name}"/>
+                <p>
                     <b>Статус:</b>
                 </p>
                 <span th:if="${item.done}">
@@ -59,7 +63,7 @@
                 </span>
             </div>
         </div>
-        <div class="btn-group" >
+        <div class="btn-group" th:if="${user.name != 'Гость'}">
             <form  th:action="@{|/setDone/${item.id}|}" method="GET">
                 <button type="submit" class="btn btn-primary mt-3" style="margin-right: 16px" >Выполнено</button>
             </form>

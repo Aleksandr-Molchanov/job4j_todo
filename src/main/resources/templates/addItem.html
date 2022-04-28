@@ -28,7 +28,7 @@
             <div class="navbar-nav">
                 <a class="nav-item nav-link" th:href="@{/items}">Все задания</a>
                 <a th:if="${user.name == 'Гость'}" class="nav-item nav-link" th:href="@{/formRegistration}">Регистрация</a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/formLogin}">
                     <span th:text="${user.name}"></span>
                     <span> | Войти</span>
                 </a>

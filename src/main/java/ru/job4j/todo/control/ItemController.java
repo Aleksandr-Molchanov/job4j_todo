@@ -1,20 +1,22 @@
 package ru.job4j.todo.control;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.ItemService;
+import ru.job4j.todo.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
+@ThreadSafe
 @Controller
 public class ItemController {
 
     private final ItemService itemService;
-
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
     }
@@ -24,7 +26,7 @@ public class ItemController {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
-            user.setEmail("Гость");
+            user.setName("Гость");
         }
         model.addAttribute("user", user);
         model.addAttribute("items", itemService.findAll());
@@ -32,14 +34,22 @@ public class ItemController {
     }
 
     @PostMapping("/saveItem")
-    public String saveItem(@ModelAttribute Item item) {
+    public String saveItem(@ModelAttribute Item item, HttpSession session) {
+        User user = (User) session.getAttribute("user");
         item.setCreated(LocalDateTime.now().withNano(0));
+        item.setUser(user);
         itemService.add(item);
         return "redirect:/items";
     }
 
     @GetMapping("/addItem")
-    public String addItem(Model model) {
+    public String addItem(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         return "addItem";
     }
 
@@ -48,7 +58,7 @@ public class ItemController {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
-            user.setEmail("Гость");
+            user.setName("Гость");
         }
         model.addAttribute("user", user);
         model.addAttribute("item", new Item());
@@ -80,7 +90,7 @@ public class ItemController {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
-            user.setEmail("Гость");
+            user.setName("Гость");
         }
         model.addAttribute("user", user);
         model.addAttribute("items", itemService.findByDone(false));
@@ -92,7 +102,7 @@ public class ItemController {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
-            user.setEmail("Гость");
+            user.setName("Гость");
         }
         model.addAttribute("user", user);
         model.addAttribute("items", itemService.findByDone(true));
@@ -104,7 +114,7 @@ public class ItemController {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
-            user.setEmail("Гость");
+            user.setName("Гость");
         }
         model.addAttribute("user", user);
         model.addAttribute("item", itemService.findById(id));

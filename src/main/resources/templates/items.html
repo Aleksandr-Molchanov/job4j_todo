@@ -29,7 +29,7 @@
                 <a class="nav-item nav-link" th:href="@{/newItems}">Новые задания</a>
                 <a class="nav-item nav-link" th:href="@{/doneItems}">Выполненные задания</a>
                 <a th:if="${user.name == 'Гость'}" class="nav-item nav-link" th:href="@{/formRegistration}">Регистрация</a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/formLogin}">
                     <span th:text="${user.name}"></span>
                     <span> | Войти</span>
                 </a>
@@ -45,8 +45,7 @@
             <thead>
             <tr>
                 <th scope="col">Название</th>
-                <th scope="col">Время добавления/редактирования</th>
-                <th scope="col">Статус выпонения</th>
+                <th scope="col">Автор</th>
             </tr>
             </thead>
             <tbody>
@@ -55,22 +54,16 @@
                     <td>
                         <a th:href="@{|/descriptionItem/${item.id}|}" th:text="${item.name}"/>
                     </td>
-                    <td th:text="${item.created}" />
-                    <td>
-                        <span th:if="${item.done}">
-                            Выполнено
-                        </span>
-                        <span th:if="${!item.done}">
-                            Не выполнено
-                        </span>
-                    </td>
+                    <td th:text="${item.user.name}" />
                 </div>
             </tr>
             </tbody>
         </table>
         <div class="button addItem">
-            <a class="nav-item nav-link" th:href="@{/addItem}">
-                <button type="submit" class="btn btn-primary mt-3" >Добавить</button>
+            <a class="nav-item" th:if="${user.name != 'Гость'}">
+                <a class="nav-item nav-link" th:href="@{/addItem}">
+                    <button type="submit" class="btn btn-primary mt-3" >Добавить</button>
+                </a>
             </a>
         </div>
     </div>
