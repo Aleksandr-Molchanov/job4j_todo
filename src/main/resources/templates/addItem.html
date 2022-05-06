@@ -55,6 +55,12 @@
                         <label for="name">Описание</label>
                         <input type="text" class="form-control" name="description" id="description">
                     </div>
+                    <div class="form-group">
+                        <label for="category.id">Категория</label>
+                        <select class="form-control" id="category.id" name="category.id" multiple>
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </select>
+                    </div>
                     <div class="form-check">
                         <input type="checkbox" name="done" class="form-check-input" id="done">
                         <label class="form-check-label" for="done">Выполнено</label>

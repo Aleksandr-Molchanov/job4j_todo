@@ -2,6 +2,7 @@ package ru.job4j.todo.persistence;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 
 import javax.persistence.Query;
@@ -16,9 +17,13 @@ public class ItemDBStore implements DBStore {
         this.sf = sf;
     }
 
-    public Item add(Item item) {
+    public Item add(Item item, List<String> idCategory) {
         return tx(
                 session -> {
+                    for (String id : idCategory) {
+                        Category category = session.find(Category.class, Integer.parseInt(id));
+                        item.addCategory(category);
+                    }
                     session.save(item);
                     return item;
                 }, sf

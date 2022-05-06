@@ -6,19 +6,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
+import ru.job4j.todo.service.CategoryService;
 import ru.job4j.todo.service.ItemService;
-import ru.job4j.todo.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @ThreadSafe
 @Controller
 public class ItemController {
 
     private final ItemService itemService;
-    public ItemController(ItemService itemService) {
+
+    private final CategoryService categoryService;
+
+    public ItemController(ItemService itemService, CategoryService categoryService) {
         this.itemService = itemService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/items")
@@ -34,11 +39,11 @@ public class ItemController {
     }
 
     @PostMapping("/saveItem")
-    public String saveItem(@ModelAttribute Item item, HttpSession session) {
+    public String saveItem(@ModelAttribute Item item, HttpSession session, @RequestParam("category.id") List<String> idCategory) {
         User user = (User) session.getAttribute("user");
         item.setCreated(LocalDateTime.now().withNano(0));
         item.setUser(user);
-        itemService.add(item);
+        itemService.add(item, idCategory);
         return "redirect:/items";
     }
 
@@ -50,6 +55,7 @@ public class ItemController {
             user.setName("Гость");
         }
         model.addAttribute("user", user);
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "addItem";
     }
 
