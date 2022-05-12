@@ -10,7 +10,7 @@ import ru.job4j.todo.service.CategoryService;
 import ru.job4j.todo.service.ItemService;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @ThreadSafe
@@ -41,7 +41,7 @@ public class ItemController {
     @PostMapping("/saveItem")
     public String saveItem(@ModelAttribute Item item, HttpSession session, @RequestParam("category.id") List<String> idCategory) {
         User user = (User) session.getAttribute("user");
-        item.setCreated(LocalDateTime.now().withNano(0));
+        item.setCreated(new Date(System.currentTimeMillis()));
         item.setUser(user);
         itemService.add(item, idCategory);
         return "redirect:/items";
@@ -74,7 +74,7 @@ public class ItemController {
 
     @PostMapping("/updateItem")
     public String updateItem(@ModelAttribute Item item) {
-        item.setCreated(LocalDateTime.now().withNano(0));
+        item.setCreated(new Date(System.currentTimeMillis()));
         itemService.update(item);
         return "redirect:/items";
     }
