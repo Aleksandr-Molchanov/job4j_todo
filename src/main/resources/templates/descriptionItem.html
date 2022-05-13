@@ -48,18 +48,14 @@
                     <b>Время последнего изменения:</b>
                 </p>
                 <p class="card-text" th:text="${item.created}"/>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Категории:</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                <p>
+                    <b>Категории:</b>
+                </p>
+                <p>
                     <tr th:each="category: ${item.categories}">
                         <td th:text="${category.name}" />
                     </tr>
-                    </tbody>
-                </table>
+                </p>
                 <p>
                     <b>Автор задания:</b>
                 </p>

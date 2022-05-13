@@ -36,7 +36,7 @@
                 Редатирование задания
             </div>
             <div class="card-body">
-                <form th:action="@{/updateItem}" method="POST" th:object="${item}">
+                <form th:action="@{/form}" method="POST" th:object="${item}">
                     <input type="hidden" name="id" th:field="*{id}"/>
                     <div class="form-group">
                         <label for="name">Название</label>
@@ -45,6 +45,12 @@
                     <div class="form-group">
                         <label for="name">Описание</label>
                         <input type="text" class="form-control" name="description" id="description">
+                    </div>
+                    <div class="form-group">
+                        <label for="category.id">Категория</label>
+                        <select class="form-control" id="category.id" name="category.id" multiple>
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

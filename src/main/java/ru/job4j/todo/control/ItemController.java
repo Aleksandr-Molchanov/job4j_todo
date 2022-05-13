@@ -69,13 +69,17 @@ public class ItemController {
         model.addAttribute("user", user);
         model.addAttribute("item", new Item());
         model.addAttribute("item", itemService.findById(id));
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "updateItem";
     }
 
     @PostMapping("/updateItem")
-    public String updateItem(@ModelAttribute Item item) {
+    public String updateItem(@ModelAttribute Item item, HttpSession session, @RequestParam("category.id") List<String> idCategory) {
+        User user = (User) session.getAttribute("user");
         item.setCreated(new Date(System.currentTimeMillis()));
-        itemService.update(item);
+        item.setUser(user);
+        System.out.println("Контроллер" + idCategory);
+        itemService.update(item, idCategory);
         return "redirect:/items";
     }
 

@@ -20,8 +20,8 @@ public class ItemService {
         store.add(item, idCategory);
     }
 
-    public void update(Item item) {
-        store.update(item);
+    public void update(Item item, List<String> idCategory) {
+        store.update(item, idCategory);
     }
 
     public void delete(int id) {
