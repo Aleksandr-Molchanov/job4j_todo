@@ -44,11 +44,11 @@ public class ItemDBStore implements DBStore {
                             + " i.categories = :categories "
                             + " where i.id = :id";
                     final Query query = session.createQuery(hql);
-                    query.setParameter("id", item.getId());
                     query.setParameter("name", item.getName());
                     query.setParameter("description", item.getDescription());
                     query.setParameter("created", item.getCreated());
                     query.setParameter("categories", item.getCategories());
+                    query.setParameter("id", item.getId());
                     System.out.println(item.getCategories());
                     int rsl = query.executeUpdate();
                     return rsl != 0;
